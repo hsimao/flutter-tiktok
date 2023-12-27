@@ -48,7 +48,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
     if (!_isPasswordValid()) return;
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const BirthDayScreen()),
+      MaterialPageRoute(builder: (context) => const BirthdayScreen()),
     );
   }
 
