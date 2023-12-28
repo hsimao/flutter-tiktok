@@ -93,7 +93,12 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
             ),
             Gaps.v28,
             GestureDetector(
-                onTap: _onNextTap, child: const FormButton(disabled: false)),
+              onTap: _onNextTap,
+              child: const FormButton(
+                text: 'Next',
+                disabled: false,
+              ),
+            ),
           ],
         ),
       ),
