@@ -18,7 +18,6 @@ class _StfScreenState extends State<StfScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('Im build');
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
