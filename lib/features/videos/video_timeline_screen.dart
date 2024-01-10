@@ -44,11 +44,12 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
-        controller: _pageController,
-        onPageChanged: _onPageChanged,
-        scrollDirection: Axis.vertical,
-        itemCount: _itemCount,
-        itemBuilder: (context, index) =>
-            VideoPost(onVideoFinished: _onVideoFinished));
+      controller: _pageController,
+      onPageChanged: _onPageChanged,
+      scrollDirection: Axis.vertical,
+      itemCount: _itemCount,
+      itemBuilder: (context, index) =>
+          VideoPost(onVideoFinished: _onVideoFinished, index: index),
+    );
   }
 }
