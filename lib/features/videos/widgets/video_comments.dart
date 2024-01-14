@@ -11,13 +11,31 @@ class VideoComments extends StatefulWidget {
 }
 
 class _VideoCommentsState extends State<VideoComments> {
+  bool _isWriting = false;
+
   void _onClosePressed() {
     Navigator.of(context).pop();
   }
 
+  void _stopWriting() {
+    FocusScope.of(context).unfocus();
+    setState(() {
+      _isWriting = false;
+    });
+  }
+
+  void _onStartWritting() {
+    setState(() {
+      _isWriting = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Container(
+      height: size.height * 0.75,
       // 讓圓角生效
       clipBehavior: Clip.hardEdge,
       // 圓角
@@ -40,62 +58,158 @@ class _VideoCommentsState extends State<VideoComments> {
             ),
           ],
         ),
-        body: ListView.separated(
-          // 每行之間的元素
-          separatorBuilder: (context, index) => Gaps.v20,
-          padding: const EdgeInsets.symmetric(
-            vertical: Sizes.size10,
-            horizontal: Sizes.size16,
-          ),
-          itemCount: 10,
-          itemBuilder: (context, index) => Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        body: GestureDetector(
+          onTap: _stopWriting,
+          child: Stack(
             children: [
-              // Avatar
-              const CircleAvatar(
-                radius: 18,
-                child: Text('User'),
-              ),
-              Gaps.h10,
-              // 填滿剩餘空間
-              Expanded(
-                child: Column(
+              ListView.separated(
+                // 每行之間的元素
+                separatorBuilder: (context, index) => Gaps.v20,
+                padding: const EdgeInsets.symmetric(
+                  vertical: Sizes.size10,
+                  horizontal: Sizes.size16,
+                ),
+                itemCount: 10,
+                itemBuilder: (context, index) => Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'User',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: Sizes.size14,
-                        color: Colors.grey.shade500,
+                    // Avatar
+                    const CircleAvatar(
+                      radius: 18,
+                      child: Text('User'),
+                    ),
+                    Gaps.h10,
+                    // 填滿剩餘空間
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'User',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: Sizes.size14,
+                              color: Colors.grey.shade500,
+                            ),
+                          ),
+                          Gaps.v3,
+                          const Text(
+                              "That's not it l've seen the same thing but also in a cave"),
+                        ],
                       ),
                     ),
-                    Gaps.v3,
-                    const Text(
-                        "That's not it l've seen the same thing but also in a cave"),
+                    Gaps.h10,
+                    Column(
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.heart,
+                          size: Sizes.size20,
+                          color: Colors.grey.shade500,
+                        ),
+                        Gaps.v2,
+                        Text(
+                          '52.2K',
+                          style: TextStyle(
+                            color: Colors.grey.shade500,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
-              Gaps.h10,
-              Column(
-                children: [
-                  FaIcon(
-                    FontAwesomeIcons.heart,
-                    size: Sizes.size20,
-                    color: Colors.grey.shade500,
-                  ),
-                  Gaps.v2,
-                  Text(
-                    '52.2K',
-                    style: TextStyle(
-                      color: Colors.grey.shade500,
+              // Stack + Positioned 讓彈出鍵盤時，不要被遮住, 會照著鍵盤移動
+              Positioned(
+                bottom: 0,
+                width: size.width,
+                child: BottomAppBar(
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Sizes.size16,
+                      vertical: Sizes.size10,
+                    ),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 18,
+                          backgroundColor: Colors.grey.shade500,
+                          foregroundColor: Colors.white,
+                          child: const Text('User'),
+                        ),
+                        Gaps.h10,
+                        Expanded(
+                          // Input 樣式
+                          child: SizedBox(
+                            height: Sizes.size44,
+                            child: TextField(
+                              onTap: _onStartWritting,
+                              // 文字輸入可換行
+                              expands: true,
+                              minLines: null,
+                              maxLines: null,
+                              textInputAction: TextInputAction.newline,
+                              cursorColor: Theme.of(context).primaryColor,
+                              decoration: InputDecoration(
+                                hintText: "Write a comment...",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    Sizes.size12,
+                                  ),
+                                  borderSide: BorderSide.none,
+                                ),
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: Sizes.size12,
+                                ),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: Sizes.size14,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      FaIcon(
+                                        FontAwesomeIcons.at,
+                                        color: Colors.grey.shade900,
+                                      ),
+                                      Gaps.h14,
+                                      FaIcon(
+                                        FontAwesomeIcons.gift,
+                                        color: Colors.grey.shade900,
+                                      ),
+                                      Gaps.h14,
+                                      FaIcon(
+                                        FontAwesomeIcons.faceSmile,
+                                        color: Colors.grey.shade900,
+                                      ),
+                                      Gaps.h14,
+                                      if (_isWriting)
+                                        GestureDetector(
+                                          onTap: _stopWriting,
+                                          child: FaIcon(
+                                            FontAwesomeIcons.circleArrowUp,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              )
             ],
           ),
         ),
+        // Comment Input
       ),
     );
   }

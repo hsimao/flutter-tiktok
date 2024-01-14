@@ -36,6 +36,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // 當鍵盤彈出時，不要調整畫面
+      resizeToAvoidBottomInset: false,
       backgroundColor: _selectedIndex == 0 ? Colors.black : Colors.white,
       body: Stack(
         children: [
