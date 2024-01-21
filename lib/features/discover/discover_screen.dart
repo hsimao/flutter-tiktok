@@ -35,8 +35,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _textEditingController.dispose();
+    super.dispose();
   }
 
   @override

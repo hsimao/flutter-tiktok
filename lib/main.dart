@@ -20,6 +20,8 @@ class TikTokApp extends StatelessWidget {
           // 光標顏色
           cursorColor: Color(0xFFE9435A),
         ),
+        // 水波紋顏色透明
+        splashColor: Colors.transparent,
         appBarTheme: const AppBarTheme(
             foregroundColor: Colors.black,
             backgroundColor: Colors.white,
