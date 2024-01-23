@@ -23,14 +23,15 @@ class TikTokApp extends StatelessWidget {
         // 水波紋顏色透明
         splashColor: Colors.transparent,
         appBarTheme: const AppBarTheme(
-            foregroundColor: Colors.black,
-            backgroundColor: Colors.white,
-            elevation: 0,
-            titleTextStyle: TextStyle(
-              color: Colors.black,
-              fontSize: Sizes.size18,
-              fontWeight: FontWeight.w600,
-            )),
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          titleTextStyle: TextStyle(
+            color: Colors.black,
+            fontSize: Sizes.size18,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ),
       home: const MainNavigationScreen(),
     );

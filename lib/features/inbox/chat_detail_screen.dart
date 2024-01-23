@@ -90,7 +90,6 @@ class ChatDetailScreen extends StatelessWidget {
           // 底部對話框
           Positioned(
             bottom: 0,
-            // 滿版寬度
             width: MediaQuery.of(context).size.width,
             child: BottomAppBar(
               color: Colors.grey.shade50,
@@ -100,11 +99,11 @@ class ChatDetailScreen extends StatelessWidget {
                   Gaps.h20,
                   Container(
                     child: const FaIcon(FontAwesomeIcons.paperPlane),
-                  ),
+                  )
                 ],
               ),
             ),
-          ),
+          )
         ],
       ),
     );
