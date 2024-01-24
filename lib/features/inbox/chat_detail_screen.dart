@@ -10,25 +10,25 @@ class ChatDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const ListTile(
+        title: ListTile(
           contentPadding: EdgeInsets.zero,
           horizontalTitleGap: Sizes.size8,
-          leading: CircleAvatar(
+          leading: const CircleAvatar(
             radius: Sizes.size24,
             foregroundImage: NetworkImage(
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCHbFQ3EEJmClH2-0xwgSsTK0Zi79XIAC4Pg&usqp=CAU"),
             child: Text('MK'),
           ),
-          title: Text(
+          title: const Text(
             'Hey',
             style: TextStyle(
               fontWeight: FontWeight.w600,
             ),
           ),
-          subtitle: Text('Active now'),
+          subtitle: const Text('Active now'),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: const [
               FaIcon(
                 FontAwesomeIcons.flag,
                 color: Colors.black,
