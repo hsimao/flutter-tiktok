@@ -12,10 +12,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        // 往上滾動消失縮小的 AppBar
+        // 往上滾動消失縮小, 下拉出現的 AppBar
         SliverAppBar(
+          snap: true,
+          // 往上滾動時固定在頂部
+          pinned: true,
+          // 下拉馬上出現
           floating: true,
-          // 可往下拖動
+          // 可往下拖動時讓背景延展
           stretch: true,
           backgroundColor: Colors.teal,
           elevation: 1,
@@ -26,6 +30,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             stretchModes: const [
               StretchMode.blurBackground,
               StretchMode.zoomBackground,
+              StretchMode.fadeTitle,
             ],
             background: Image.asset(
               'assets/images/placeholder.jpg',
@@ -33,6 +38,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ),
             title: const Text('Hello!'),
           ),
+        ),
+        SliverFixedExtentList(
+          delegate: SliverChildBuilderDelegate(
+            childCount: 50,
+            (context, index) => Container(
+              color: Colors.amber[100 * (index % 9)],
+              child: Align(
+                alignment: Alignment.center,
+                child: Text("Item $index"),
+              ),
+            ),
+          ),
+          itemExtent: 100,
         ),
       ],
     );
