@@ -9,8 +9,10 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: Column(
-        children: const [],
+      body: ListView(
+        children: const [
+          AboutListTile(),
+        ],
       ),
     );
   }
