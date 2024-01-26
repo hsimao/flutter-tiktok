@@ -217,7 +217,7 @@ class _VideoPostState extends State<VideoPost>
                   radius: 25,
                   backgroundColor: Colors.black,
                   foregroundImage: NetworkImage(
-                      'https://static.theceomagazine.net/wp-content/uploads/2018/10/15093202/elon-musk-1100x733.jpg'),
+                      'https://bucket-img.tnlmedia.com/cabinet/2023/06/339fe563-fc6f-4802-aba1-891125e3b980.jpg?w=750&fit=max&auto=compress'),
                   child: Text('Nick'),
                 ),
                 Gaps.v24,
