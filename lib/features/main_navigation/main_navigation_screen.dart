@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -36,8 +37,19 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     ));
   }
 
+  // 當切換到 Video 頁面更新狀態欄顏色為白色，其他頁面為黑色
+  void _changeSystemColor() {
+    if (_selectedIndex == 0) {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    } else {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _changeSystemColor();
+
     return Scaffold(
       // 當鍵盤彈出時，不要調整畫面
       resizeToAvoidBottomInset: false,
