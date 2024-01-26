@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -28,6 +29,7 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPaused = false;
+  bool _isVolumeOn = true;
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
@@ -45,6 +47,12 @@ class _VideoPostState extends State<VideoPost>
         VideoPlayerController.asset("assets/videos/video.mp4");
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
+
+    // 如果是在 web 端,將聲音預設為 0, 因為瀏覽器限制自動播放不能有聲音
+    if (kIsWeb) {
+      await _videoPlayerController.setVolume(0);
+      _isVolumeOn = false;
+    }
     _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
   }
@@ -109,6 +117,18 @@ class _VideoPostState extends State<VideoPost>
     );
 
     _onTogglePause();
+  }
+
+  void _onToggleVolume() async {
+    if (_isVolumeOn) {
+      await _videoPlayerController.setVolume(0);
+    } else {
+      await _videoPlayerController.setVolume(1);
+    }
+
+    setState(() {
+      _isVolumeOn = !_isVolumeOn;
+    });
   }
 
   @override
@@ -183,6 +203,15 @@ class _VideoPostState extends State<VideoPost>
             right: 10,
             child: Column(
               children: [
+                GestureDetector(
+                  onTap: _onToggleVolume,
+                  child: VideoButton(
+                    icon: _isVolumeOn
+                        ? FontAwesomeIcons.volumeHigh
+                        : FontAwesomeIcons.volumeXmark,
+                  ),
+                ),
+                Gaps.v40,
                 // Avatar
                 const CircleAvatar(
                   radius: 25,
