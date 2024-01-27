@@ -122,6 +122,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                       style: TextStyle(
                         fontSize: Sizes.size18,
                         fontWeight: FontWeight.bold,
+                        height: 1.2,
                       ),
                     ),
                     Gaps.v8,

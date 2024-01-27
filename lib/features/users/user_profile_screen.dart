@@ -234,7 +234,7 @@ class UserProfileStatisticItem extends StatelessWidget {
             fontSize: Sizes.size18,
           ),
         ),
-        Gaps.v3,
+        Gaps.v1,
         Text(
           secondary,
           style: TextStyle(
