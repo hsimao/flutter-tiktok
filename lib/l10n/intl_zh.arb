@@ -1,0 +1,22 @@
+{
+  "signUpTitle": "註冊 {nameOfTheApp}",
+  "@signUpTitle": {
+    "description": "The title people see when they open the app for the first time.",
+    "placeholders": {
+      "nameOfTheApp": {
+        "type": "String",
+        "example": "TikTok"
+      }
+    }
+  },
+  "loginTitle": "登入 {nameOfTheApp} 帳號",
+  "@loginTitle": {
+    "description": "The title people see when they open the log in screen.",
+    "placeholders": {
+      "nameOfTheApp": {
+        "type": "String",
+        "example": "TikTok"
+      }
+    }
+  }
+}
