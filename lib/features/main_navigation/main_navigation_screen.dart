@@ -56,7 +56,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     return Scaffold(
       // 當鍵盤彈出時，不要調整畫面
       resizeToAvoidBottomInset: false,
-      backgroundColor: _selectedIndex == 0 ? Colors.black : Colors.white,
+      backgroundColor:
+          _selectedIndex == 0 || isDark ? Colors.black : Colors.white,
       body: Stack(
         children: [
           Offstage(
