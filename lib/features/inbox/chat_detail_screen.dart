@@ -92,7 +92,6 @@ class ChatDetailScreen extends StatelessWidget {
             bottom: 0,
             width: MediaQuery.of(context).size.width,
             child: BottomAppBar(
-              color: Colors.grey.shade50,
               child: Row(
                 children: [
                   const Expanded(child: TextField()),

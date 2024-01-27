@@ -85,8 +85,10 @@ class _InboxScreenState extends State<InboxScreen> {
             ),
             subtitle: const Text(
               'Messages from followers will appear here',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: Sizes.size16,
+                fontSize: Sizes.size14,
               ),
             ),
             trailing: const FaIcon(
