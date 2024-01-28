@@ -20,11 +20,24 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'zh';
 
-  static String m0(nameOfTheApp) => "登入 ${nameOfTheApp} 帳號";
+  static String m0(gender) => "登入";
 
-  static String m1(nameOfTheApp) => "註冊 ${nameOfTheApp}";
+  static String m1(nameOfTheApp) => "登入 ${nameOfTheApp} 帳號";
+
+  static String m2(nameOfTheApp) => "註冊 ${nameOfTheApp}";
+
+  static String m3(videoCount) => "創建個人檔案，關注其他帳戶，製作自己的影片等等。";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) =>
-      <String, Function>{"loginTitle": m0, "signUpTitle": m1};
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "alreadyHaveAnAccount":
+            MessageLookupByLibrary.simpleMessage("已經有帳號了嗎？"),
+        "appleButton": MessageLookupByLibrary.simpleMessage("使用 Apple 帳號"),
+        "emailPasswordButton":
+            MessageLookupByLibrary.simpleMessage("使用電子郵件和密碼"),
+        "logIn": m0,
+        "loginTitle": m1,
+        "signUpTitle": m2,
+        "singUpSubtitle": m3
+      };
 }
