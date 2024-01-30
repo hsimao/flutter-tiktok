@@ -31,7 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(nameOfTheApp) => "登入 ${nameOfTheApp} 帳號";
 
-  static String m5(nameOfTheApp, when) => "註冊 ${nameOfTheApp} ${when}";
+  static String m5(nameOfTheApp) => "註冊 ${nameOfTheApp}";
 
   static String m6(videoCount) => "創建個人檔案，關注其他帳戶，製作自己的影片等等。";
 

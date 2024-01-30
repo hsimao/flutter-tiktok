@@ -15,7 +15,7 @@ class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
   void _onLoginTap(BuildContext context) async {
-    context.push(LoginScreen.routeName);
+    context.go(LoginScreen.routeName);
   }
 
   void _onEmailTap(BuildContext context) {
@@ -46,7 +46,7 @@ class SignUpScreen extends StatelessWidget {
     //   ),
     // );
 
-    context.push(UsernameScreen.routeName);
+    context.go(UsernameScreen.routeName);
   }
 
   @override
@@ -65,7 +65,7 @@ class SignUpScreen extends StatelessWidget {
                 children: [
                   Gaps.v80,
                   Text(
-                    S.of(context).signUpTitle("TikTok", DateTime.now()),
+                    S.of(context).signUpTitle("TikTok"),
                     style: const TextStyle(
                       fontSize: Sizes.size24,
                       fontWeight: FontWeight.w700,
