@@ -15,7 +15,7 @@ class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
   void _onLoginTap(BuildContext context) async {
-    context.go(LoginScreen.routeName);
+    context.push(LoginScreen.routeName);
   }
 
   void _onEmailTap(BuildContext context) {
@@ -46,7 +46,7 @@ class SignUpScreen extends StatelessWidget {
     //   ),
     // );
 
-    context.go(UsernameScreen.routeName);
+    context.push(UsernameScreen.routeName);
   }
 
   @override
