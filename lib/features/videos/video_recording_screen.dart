@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/video_preview_screen.dart';
 import 'package:tiktok_clone/features/videos/widgets/camera_control_buttons.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
@@ -48,9 +49,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     _cameraController = CameraController(
       cameras[_isSelfieMode ? 1 : 0],
       ResolutionPreset.ultraHigh,
+      enableAudio: false,
     );
 
     await _cameraController.initialize();
+
+    // NOTE: 只有 iOS 才需有作用, 提早調用此方法可降低剛開始錄影時的延遲
+    await _cameraController.prepareForVideoRecording();
 
     _flashMode = _cameraController.value.flashMode;
   }
@@ -85,16 +90,38 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     setState(() {});
   }
 
-  void _startRecording(TapDownDetails _) {
-    print("START RECORDING");
+  Future<void> _startRecording(TapDownDetails _) async {
+    // 正在錄影中就直接返回
+    if (_cameraController.value.isRecordingVideo) {
+      return;
+    }
+
+    await _cameraController.startVideoRecording();
+
     _buttonAnimationController.forward();
     _progressAnimationController.forward();
   }
 
-  void _stopRecording() {
-    print("STOP RECORDING");
+  Future<void> _stopRecording() async {
+    if (!_cameraController.value.isRecordingVideo) {
+      return;
+    }
+
     _buttonAnimationController.reverse();
     _progressAnimationController.reset();
+
+    final video = await _cameraController.stopVideoRecording();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VideoPreviewScreen(
+            video: video,
+          ),
+        ),
+      );
+    });
   }
 
   @override
@@ -113,6 +140,14 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
         _stopRecording();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _buttonAnimationController.dispose();
+    _progressAnimationController.dispose();
+    _cameraController.dispose();
+    super.dispose();
   }
 
   @override
