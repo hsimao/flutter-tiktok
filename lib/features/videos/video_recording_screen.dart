@@ -16,10 +16,12 @@ class VideoRecordingScreen extends StatefulWidget {
 }
 
 class _VideoRecordingScreenState extends State<VideoRecordingScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   bool _hasPermission = false;
 
   bool _isSelfieMode = false;
+
+  bool _appActivated = true;
 
   late FlashMode _flashMode;
 
@@ -60,6 +62,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     await _cameraController.prepareForVideoRecording();
 
     _flashMode = _cameraController.value.flashMode;
+
+    setState(() {});
   }
 
   Future<void> initPermissions() async {
@@ -134,6 +138,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     super.initState();
     initPermissions();
 
+    // 監聽用戶是否離開 app
+    WidgetsBinding.instance.addObserver(this);
+
     // 只要 CircularProgress 有變化就會觸發 setState
     _progressAnimationController.addListener(() {
       setState(() {});
@@ -153,6 +160,29 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     _progressAnimationController.dispose();
     _cameraController.dispose();
     super.dispose();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (!_hasPermission) return;
+    if (!_cameraController.value.isInitialized) return;
+
+    switch (state) {
+      case AppLifecycleState.resumed:
+        _appActivated = true;
+        await initPermissions();
+        break;
+      case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
+        _appActivated = false;
+        setState(() {});
+        // 從 widget 樹移除 CameraPreview 後必須將其釋放。
+        // setState 的順序很重要
+        _cameraController.dispose();
+        break;
+    }
   }
 
   @override
@@ -180,7 +210,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
             : Stack(
                 alignment: Alignment.center,
                 children: [
-                  CameraPreview(_cameraController),
+                  if (_appActivated) CameraPreview(_cameraController),
                   Positioned(
                     top: Sizes.size56,
                     right: Sizes.size20,
