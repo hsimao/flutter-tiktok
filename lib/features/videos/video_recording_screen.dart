@@ -91,10 +91,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   }
 
   Future<void> _startRecording(TapDownDetails _) async {
-    // 正在錄影中就直接返回
-    if (_cameraController.value.isRecordingVideo) {
-      return;
-    }
+    if (_cameraController.value.isRecordingVideo) return;
 
     await _cameraController.startVideoRecording();
 
@@ -103,9 +100,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   }
 
   Future<void> _stopRecording() async {
-    if (!_cameraController.value.isRecordingVideo) {
-      return;
-    }
+    if (!_cameraController.value.isRecordingVideo) return;
 
     _buttonAnimationController.reverse();
     _progressAnimationController.reset();
@@ -190,6 +185,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                     child: GestureDetector(
                       onTapDown: _startRecording,
                       onTapUp: (details) => _stopRecording(),
+                      onLongPressEnd: (details) => _stopRecording(),
                       child: ScaleTransition(
                         scale: _buttonAnimation,
                         child: Stack(
