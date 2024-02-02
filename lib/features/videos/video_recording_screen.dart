@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,6 +25,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   bool _isSelfieMode = false;
 
   bool _appActivated = true;
+
+  // 避免相機尚未初始化前就渲染相機畫面使用
+  bool _showCamera = false;
 
   late FlashMode _flashMode;
 
@@ -50,6 +56,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   Future<void> initCamera() async {
     final cameras = await availableCameras();
+    print('_showCamera: $_showCamera');
+
     if (cameras.isEmpty) {
       return;
     }
@@ -66,6 +74,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     await _cameraController.prepareForVideoRecording();
 
     _flashMode = _cameraController.value.flashMode;
+
+    // NOTE: 渲染畫面必須再有調用相機初始化後才能顯示, 以及有調用到 _cameraController 相關的變數
+    _showCamera = cameras.isNotEmpty;
 
     // 相機縮放參數
     minZoomLevel = await _cameraController.getMinZoomLevel();
@@ -229,7 +240,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       backgroundColor: Colors.black,
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: !_hasPermission || !_cameraController.value.isInitialized
+        child: !_hasPermission
             ? const Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -248,16 +259,18 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
             : Stack(
                 alignment: Alignment.center,
                 children: [
-                  if (_appActivated) CameraPreview(_cameraController),
-                  Positioned(
-                    top: Sizes.size56,
-                    right: Sizes.size20,
-                    child: CameraControlButtons(
-                      flashMode: _flashMode,
-                      setFlashMode: _setFlashMode,
-                      toggleSelfieMode: _toggleSelfieMode,
+                  if (_appActivated && _showCamera)
+                    CameraPreview(_cameraController),
+                  if (_showCamera)
+                    Positioned(
+                      top: Sizes.size56,
+                      right: Sizes.size20,
+                      child: CameraControlButtons(
+                        flashMode: _flashMode,
+                        setFlashMode: _setFlashMode,
+                        toggleSelfieMode: _toggleSelfieMode,
+                      ),
                     ),
-                  ),
                   Positioned(
                     width: MediaQuery.of(context).size.width,
                     bottom: Sizes.size40,
