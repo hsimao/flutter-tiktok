@@ -25,6 +25,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   late FlashMode _flashMode;
 
+  double zoomLevel = 0.0;
+  late double minZoomLevel;
+  late double maxZoomLevel;
+
   late final AnimationController _buttonAnimationController =
       AnimationController(
     vsync: this,
@@ -62,6 +66,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     await _cameraController.prepareForVideoRecording();
 
     _flashMode = _cameraController.value.flashMode;
+
+    // 相機縮放參數
+    minZoomLevel = await _cameraController.getMinZoomLevel();
+    maxZoomLevel = await _cameraController.getMaxZoomLevel();
 
     setState(() {});
   }
@@ -113,6 +121,11 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
     final video = await _cameraController.stopVideoRecording();
 
+    // 重置相機 zoomLevel
+    zoomLevel = minZoomLevel;
+    await _cameraController.setZoomLevel(minZoomLevel);
+    setState(() {});
+
     if (!mounted) return;
     Navigator.push(
       context,
@@ -123,6 +136,31 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
         ),
       ),
     );
+  }
+
+  // 相機縮放
+  Future<void> _onZoomInOut(DragUpdateDetails details) async {
+    double deltaY = details.delta.dy;
+
+    // 根據滑動方向更新 zoomLevel
+    if (deltaY > 0) {
+      // 向下鏡頭拉遠
+      zoomLevel = zoomLevel - 0.05;
+    } else if (deltaY < 0) {
+      // 向上鏡頭拉近
+      zoomLevel = zoomLevel + 0.05;
+    } else {
+      // 沒有垂直滑動，不做任何事情
+      return;
+    }
+
+    // 限制 zoomLevel 範圍
+    zoomLevel = zoomLevel.clamp(minZoomLevel, maxZoomLevel);
+
+    // 同步到相機
+    await _cameraController.setZoomLevel(zoomLevel);
+
+    setState(() {});
   }
 
   Future<void> _onPickVideoPressed() async {
@@ -227,9 +265,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                       children: [
                         const Spacer(),
                         GestureDetector(
+                          onPanUpdate: (detalis) => _onZoomInOut(detalis),
                           onTapDown: _startRecording,
+                          onPanEnd: (detail) => _stopRecording(),
                           onTapUp: (details) => _stopRecording(),
-                          onLongPressEnd: (details) => _stopRecording(),
                           child: ScaleTransition(
                             scale: _buttonAnimation,
                             child: Stack(
