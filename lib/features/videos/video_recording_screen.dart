@@ -56,8 +56,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   Future<void> initCamera() async {
     final cameras = await availableCameras();
-    print('_showCamera: $_showCamera');
-
     if (cameras.isEmpty) {
       return;
     }
