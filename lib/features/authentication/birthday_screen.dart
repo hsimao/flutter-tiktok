@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
@@ -30,11 +31,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   }
 
   void _onNextTap() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => const InterestsScreen(),
-        ),
-        (route) => true);
+    context.goNamed(InterestsScreen.routeName);
   }
 
   void _setTextFieldDate(DateTime date) {
@@ -102,8 +99,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-          child: SizedBox(
+      bottomNavigationBar: SizedBox(
         height: 300,
         child: CupertinoDatePicker(
           mode: CupertinoDatePickerMode.date,
@@ -111,7 +107,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
           maximumDate: initialDate,
           onDateTimeChanged: _setTextFieldDate,
         ),
-      )),
+      ),
     );
   }
 }
