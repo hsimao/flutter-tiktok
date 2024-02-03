@@ -141,7 +141,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       MaterialPageRoute(
         builder: (context) => VideoPreviewScreen(
           video: video,
-          isPicked: true,
+          isPicked: false,
         ),
       ),
     );
@@ -176,8 +176,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     final video = await ImagePicker().pickVideo(source: ImageSource.gallery);
 
     if (video == null) return;
-
-    print(video);
   }
 
   @override
@@ -205,12 +203,17 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   void dispose() {
     _buttonAnimationController.dispose();
     _progressAnimationController.dispose();
-    _cameraController.dispose();
+
+    // 有相機才銷毀
+    if (_showCamera) {
+      _cameraController.dispose();
+    }
     super.dispose();
   }
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (!_showCamera) return;
     if (!_hasPermission) return;
     if (!_cameraController.value.isInitialized) return;
 
@@ -269,6 +272,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                         toggleSelfieMode: _toggleSelfieMode,
                       ),
                     ),
+                  const Positioned(
+                    top: Sizes.size56,
+                    left: Sizes.size20,
+                    child: CloseButton(
+                      color: Colors.white,
+                    ),
+                  ),
                   Positioned(
                     width: MediaQuery.of(context).size.width,
                     bottom: Sizes.size40,
