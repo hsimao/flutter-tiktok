@@ -3,9 +3,22 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
-class ChatDetailScreen extends StatelessWidget {
-  const ChatDetailScreen({super.key});
+class ChatDetailScreen extends StatefulWidget {
+  static const String routeName = 'chatDetail';
+  static const String routePath = ':chatId';
 
+  final String chatId;
+
+  const ChatDetailScreen({
+    super.key,
+    required this.chatId,
+  });
+
+  @override
+  State<ChatDetailScreen> createState() => _ChatDetailScreenState();
+}
+
+class _ChatDetailScreenState extends State<ChatDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,16 +32,16 @@ class ChatDetailScreen extends StatelessWidget {
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCHbFQ3EEJmClH2-0xwgSsTK0Zi79XIAC4Pg&usqp=CAU"),
             child: Text('MK'),
           ),
-          title: const Text(
-            'Hey',
-            style: TextStyle(
+          title: Text(
+            'Hey (${widget.chatId})',
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
             ),
           ),
           subtitle: const Text('Active now'),
-          trailing: Row(
+          trailing: const Row(
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               FaIcon(
                 FontAwesomeIcons.flag,
                 color: Colors.black,
