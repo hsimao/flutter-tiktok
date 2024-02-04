@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
+import 'package:provider/provider.dart';
+import 'package:tiktok_clone/common/widgets/video_config/video_config_provider.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
@@ -29,9 +30,11 @@ class TikTokApp extends StatelessWidget {
   Widget build(BuildContext context) {
     S.load(const Locale("en"));
 
-    return ValueListenableBuilder(
-      valueListenable: configDarkMode,
-      builder: (context, value, child) => MaterialApp.router(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => VideoConfigProvider()),
+      ],
+      child: MaterialApp.router(
         routerConfig: router,
         debugShowCheckedModeBanner: false,
         title: 'TikTok Clone',
@@ -45,7 +48,7 @@ class TikTokApp extends StatelessWidget {
           Locale('en'),
           Locale('zh'),
         ],
-        themeMode: configDarkMode.value ? ThemeMode.dark : ThemeMode.light,
+        themeMode: ThemeMode.system,
         theme: ThemeData(
           useMaterial3: true,
           textTheme: Typography.blackMountainView,

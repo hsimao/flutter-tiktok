@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
+import 'package:provider/provider.dart';
+import 'package:tiktok_clone/common/widgets/video_config/video_config_provider.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
@@ -31,7 +32,6 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPaused = false;
-  bool _autoMute = configAutoMute.value;
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
@@ -53,7 +53,7 @@ class _VideoPostState extends State<VideoPost>
     // 如果是在 web 端,將聲音預設為 0, 因為瀏覽器限制自動播放不能有聲音
     if (kIsWeb) {
       await _videoPlayerController.setVolume(0);
-      _autoMute = false;
+      // _autoMute = false;
     }
     _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
@@ -70,13 +70,6 @@ class _VideoPostState extends State<VideoPost>
         upperBound: 1.5,
         value: 1.5,
         duration: _animationDuration);
-
-    configAutoMute.addListener(() {
-      setState(() {
-        _autoMute = configAutoMute.value;
-        _onToggleVolume();
-      });
-    });
   }
 
   @override
@@ -128,8 +121,10 @@ class _VideoPostState extends State<VideoPost>
     _onTogglePause();
   }
 
-  void _onToggleVolume() async {
-    if (_autoMute) {
+  void _onToggleVolume(BuildContext context) async {
+    context.read<VideoConfigProvider>().toggleIsMuted();
+    final bool isMuted = context.read<VideoConfigProvider>().isMuted;
+    if (isMuted) {
       await _videoPlayerController.setVolume(0);
     } else {
       await _videoPlayerController.setVolume(1);
@@ -184,14 +179,12 @@ class _VideoPostState extends State<VideoPost>
             top: 40,
             child: IconButton(
               icon: FaIcon(
-                _autoMute
+                context.watch<VideoConfigProvider>().isMuted
                     ? FontAwesomeIcons.volumeXmark
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
               ),
-              onPressed: () => {
-                configAutoMute.value = !configAutoMute.value,
-              },
+              onPressed: () => _onToggleVolume(context),
             ),
           ),
           const Positioned(
