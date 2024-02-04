@@ -31,8 +31,7 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPaused = false;
-  bool _isVolumeOn = true;
-  bool _autoMute = videoConfig.autoMute;
+  bool _autoMute = configAutoMute.value;
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
@@ -54,7 +53,7 @@ class _VideoPostState extends State<VideoPost>
     // 如果是在 web 端,將聲音預設為 0, 因為瀏覽器限制自動播放不能有聲音
     if (kIsWeb) {
       await _videoPlayerController.setVolume(0);
-      _isVolumeOn = false;
+      _autoMute = false;
     }
     _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
@@ -72,9 +71,10 @@ class _VideoPostState extends State<VideoPost>
         value: 1.5,
         duration: _animationDuration);
 
-    videoConfig.addListener(() {
+    configAutoMute.addListener(() {
       setState(() {
-        _autoMute = videoConfig.autoMute;
+        _autoMute = configAutoMute.value;
+        _onToggleVolume();
       });
     });
   }
@@ -129,15 +129,11 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _onToggleVolume() async {
-    if (_isVolumeOn) {
+    if (_autoMute) {
       await _videoPlayerController.setVolume(0);
     } else {
       await _videoPlayerController.setVolume(1);
     }
-
-    setState(() {
-      _isVolumeOn = !_isVolumeOn;
-    });
   }
 
   @override
@@ -193,7 +189,9 @@ class _VideoPostState extends State<VideoPost>
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
               ),
-              onPressed: videoConfig.toggleAutoMute,
+              onPressed: () => {
+                configAutoMute.value = !configAutoMute.value,
+              },
             ),
           ),
           const Positioned(
