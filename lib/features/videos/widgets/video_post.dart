@@ -32,6 +32,7 @@ class _VideoPostState extends State<VideoPost>
 
   bool _isPaused = false;
   bool _isVolumeOn = true;
+  bool _autoMute = videoConfig.autoMute;
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
@@ -70,6 +71,12 @@ class _VideoPostState extends State<VideoPost>
         upperBound: 1.5,
         value: 1.5,
         duration: _animationDuration);
+
+    videoConfig.addListener(() {
+      setState(() {
+        _autoMute = videoConfig.autoMute;
+      });
+    });
   }
 
   @override
@@ -181,12 +188,12 @@ class _VideoPostState extends State<VideoPost>
             top: 40,
             child: IconButton(
               icon: FaIcon(
-                VideoConfigData.of(context).autoMute
+                _autoMute
                     ? FontAwesomeIcons.volumeXmark
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
               ),
-              onPressed: VideoConfigData.of(context).toggleMuted,
+              onPressed: videoConfig.toggleAutoMute,
             ),
           ),
           const Positioned(
@@ -219,15 +226,6 @@ class _VideoPostState extends State<VideoPost>
             right: 10,
             child: Column(
               children: [
-                GestureDetector(
-                  onTap: _onToggleVolume,
-                  child: VideoButton(
-                    icon: _isVolumeOn
-                        ? FontAwesomeIcons.volumeHigh
-                        : FontAwesomeIcons.volumeXmark,
-                  ),
-                ),
-                Gaps.v40,
                 // Avatar
                 const CircleAvatar(
                   radius: 25,
