@@ -34,6 +34,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
         body: ListView(
           children: [
             ValueListenableBuilder(
+              valueListenable: configDarkMode,
+              builder: (context, value, child) => SwitchListTile.adaptive(
+                  activeColor: Colors.black,
+                  value: value,
+                  onChanged: (value) {
+                    configDarkMode.value = !configDarkMode.value;
+                  },
+                  title: const Text("Dark Mode"),
+                  subtitle: const Text('Toggle DarkMode.')),
+            ),
+            ValueListenableBuilder(
               valueListenable: configAutoMute,
               builder: (context, value, child) => SwitchListTile.adaptive(
                   activeColor: Colors.black,
