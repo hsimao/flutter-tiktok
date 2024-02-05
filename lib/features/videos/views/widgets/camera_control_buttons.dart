@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone/features/videos/widgets/camera_icon_button.dart';
+import 'package:tiktok_clone/features/videos/views/widgets/camera_icon_button.dart';
 
 final List<dynamic> flashIcons = [
   {
