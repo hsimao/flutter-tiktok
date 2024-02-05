@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config_provider.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_view_model.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -47,13 +47,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   subtitle: const Text('Toggle DarkMode.')),
             ),
             SwitchListTile.adaptive(
-              activeColor: Colors.black,
-              value: context.watch<VideoConfigProvider>().isMuted,
-              onChanged: (value) =>
-                  context.read<VideoConfigProvider>().toggleIsMuted(),
-              title: const Text("Auto Mute"),
-              subtitle: const Text("Video muted by default."),
-            ),
+                activeColor: Colors.black,
+                value: context.watch<PlaybackConfigViewModel>().muted,
+                onChanged: (value) =>
+                    context.read<PlaybackConfigViewModel>().setMuted(value),
+                title: const Text("Mute video"),
+                subtitle: const Text("Video will be muted by default.")),
+            SwitchListTile.adaptive(
+                activeColor: Colors.black,
+                value: context.watch<PlaybackConfigViewModel>().autoplay,
+                onChanged: (value) =>
+                    context.read<PlaybackConfigViewModel>().setAutoplay(value),
+                title: const Text("Autoplay"),
+                subtitle:
+                    const Text('Video will start playing automatically.')),
             SwitchListTile.adaptive(
               activeColor: Colors.black,
               value: _notifications,

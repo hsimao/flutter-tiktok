@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config_provider.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
@@ -121,10 +119,8 @@ class _VideoPostState extends State<VideoPost>
     _onTogglePause();
   }
 
-  void _onToggleVolume(BuildContext context) async {
-    context.read<VideoConfigProvider>().toggleIsMuted();
-    final bool isMuted = context.read<VideoConfigProvider>().isMuted;
-    if (isMuted) {
+  void _onToggleVolume() async {
+    if (false) {
       await _videoPlayerController.setVolume(0);
     } else {
       await _videoPlayerController.setVolume(1);
@@ -178,13 +174,13 @@ class _VideoPostState extends State<VideoPost>
             left: 20,
             top: 40,
             child: IconButton(
-              icon: FaIcon(
-                context.watch<VideoConfigProvider>().isMuted
+              icon: const FaIcon(
+                false
                     ? FontAwesomeIcons.volumeXmark
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
               ),
-              onPressed: () => _onToggleVolume(context),
+              onPressed: _onToggleVolume,
             ),
           ),
           const Positioned(
