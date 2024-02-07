@@ -32,6 +32,7 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPaused = false;
+  late bool _isMute;
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
@@ -71,10 +72,10 @@ class _VideoPostState extends State<VideoPost>
         value: 1.5,
         duration: _animationDuration);
 
-    // 監聽 muted 狀態
-    context
-        .read<PlaybackConfigViewModel>()
-        .addListener(_onPlaybackConfigChanged);
+    // 靜音初始狀態預設為 config 設定的靜音狀態
+    setState(() {
+      _isMute = context.read<PlaybackConfigViewModel>().muted;
+    });
   }
 
   @override
@@ -130,18 +131,10 @@ class _VideoPostState extends State<VideoPost>
   }
 
   // 切換靜音狀態
-  void _onToggleVolume(BuildContext context) {
-    final isMuted = context.read<PlaybackConfigViewModel>().muted;
-    context.read<PlaybackConfigViewModel>().setMuted(!isMuted);
-  }
-
-  // 依據靜音狀態調整聲音
-  void _onPlaybackConfigChanged() {
-    if (!mounted) return;
-
-    final isMuted = context.read<PlaybackConfigViewModel>().muted;
-    final double volume = isMuted ? 0 : 1;
-    _videoPlayerController.setVolume(volume);
+  void _onToggleVolume() {
+    _isMute = !_isMute;
+    _videoPlayerController.setVolume(_isMute ? 0 : 1);
+    setState(() {});
   }
 
   @override
@@ -192,12 +185,12 @@ class _VideoPostState extends State<VideoPost>
             top: 40,
             child: IconButton(
               icon: FaIcon(
-                context.watch<PlaybackConfigViewModel>().muted
+                _isMute
                     ? FontAwesomeIcons.volumeXmark
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
               ),
-              onPressed: () => _onToggleVolume(context),
+              onPressed: _onToggleVolume,
             ),
           ),
           const Positioned(
