@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_view_model.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_comments.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
@@ -68,6 +70,11 @@ class _VideoPostState extends State<VideoPost>
         upperBound: 1.5,
         value: 1.5,
         duration: _animationDuration);
+
+    // 監聽 muted 狀態
+    context
+        .read<PlaybackConfigViewModel>()
+        .addListener(_onPlaybackConfigChanged);
   }
 
   @override
@@ -82,7 +89,10 @@ class _VideoPostState extends State<VideoPost>
     if (!_isPaused &&
         info.visibleFraction == 1 &&
         !_videoPlayerController.value.isPlaying) {
-      _videoPlayerController.play();
+      final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
+      if (autoplay) {
+        _videoPlayerController.play();
+      }
     }
 
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
@@ -119,12 +129,19 @@ class _VideoPostState extends State<VideoPost>
     _onTogglePause();
   }
 
-  void _onToggleVolume() async {
-    if (false) {
-      await _videoPlayerController.setVolume(0);
-    } else {
-      await _videoPlayerController.setVolume(1);
-    }
+  // 切換靜音狀態
+  void _onToggleVolume(BuildContext context) {
+    final isMuted = context.read<PlaybackConfigViewModel>().muted;
+    context.read<PlaybackConfigViewModel>().setMuted(!isMuted);
+  }
+
+  // 依據靜音狀態調整聲音
+  void _onPlaybackConfigChanged() {
+    if (!mounted) return;
+
+    final isMuted = context.read<PlaybackConfigViewModel>().muted;
+    final double volume = isMuted ? 0 : 1;
+    _videoPlayerController.setVolume(volume);
   }
 
   @override
@@ -174,13 +191,13 @@ class _VideoPostState extends State<VideoPost>
             left: 20,
             top: 40,
             child: IconButton(
-              icon: const FaIcon(
-                false
+              icon: FaIcon(
+                context.watch<PlaybackConfigViewModel>().muted
                     ? FontAwesomeIcons.volumeXmark
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
               ),
-              onPressed: _onToggleVolume,
+              onPressed: () => _onToggleVolume(context),
             ),
           ),
           const Positioned(
