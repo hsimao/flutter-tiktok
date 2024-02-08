@@ -74,7 +74,8 @@ class _VideoPostState extends State<VideoPost>
 
     // 靜音初始狀態預設為 config 設定的靜音狀態
     setState(() {
-      _isMute = context.read<PlaybackConfigViewModel>().muted;
+      _isMute = false;
+      // _isMute = context.read<PlaybackConfigViewModel>().muted;
     });
   }
 
@@ -90,8 +91,7 @@ class _VideoPostState extends State<VideoPost>
     if (!_isPaused &&
         info.visibleFraction == 1 &&
         !_videoPlayerController.value.isPlaying) {
-      final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
-      if (autoplay) {
+      if (false) {
         _videoPlayerController.play();
       }
     }
