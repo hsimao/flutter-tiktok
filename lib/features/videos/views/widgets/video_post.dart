@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_view_model.dart';
@@ -11,7 +11,7 @@ import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class VideoPost extends StatefulWidget {
+class VideoPost extends ConsumerStatefulWidget {
   final Function onVideoFinished;
   final int index;
 
@@ -22,17 +22,16 @@ class VideoPost extends StatefulWidget {
   });
 
   @override
-  State<VideoPost> createState() => _VideoPostState();
+  VideoPostState createState() => VideoPostState();
 }
 
-class _VideoPostState extends State<VideoPost>
+class VideoPostState extends ConsumerState<VideoPost>
     with SingleTickerProviderStateMixin {
   late final VideoPlayerController _videoPlayerController;
 
   late final AnimationController _animationController;
 
   bool _isPaused = false;
-  late bool _isMute;
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
@@ -54,8 +53,12 @@ class _VideoPostState extends State<VideoPost>
     // 如果是在 web 端,將聲音預設為 0, 因為瀏覽器限制自動播放不能有聲音
     if (kIsWeb) {
       await _videoPlayerController.setVolume(0);
-      // _autoMute = false;
+
+      // 靜音初始狀態預設為 config 設定的靜音狀態
+    } else if (ref.read(playbackConfigProvider).muted) {
+      await _videoPlayerController.setVolume(0);
     }
+
     _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
   }
@@ -71,12 +74,6 @@ class _VideoPostState extends State<VideoPost>
         upperBound: 1.5,
         value: 1.5,
         duration: _animationDuration);
-
-    // 靜音初始狀態預設為 config 設定的靜音狀態
-    setState(() {
-      _isMute = false;
-      // _isMute = context.read<PlaybackConfigViewModel>().muted;
-    });
   }
 
   @override
@@ -91,7 +88,7 @@ class _VideoPostState extends State<VideoPost>
     if (!_isPaused &&
         info.visibleFraction == 1 &&
         !_videoPlayerController.value.isPlaying) {
-      if (false) {
+      if (ref.read(playbackConfigProvider).autoplay) {
         _videoPlayerController.play();
       }
     }
@@ -132,9 +129,12 @@ class _VideoPostState extends State<VideoPost>
 
   // 切換靜音狀態
   void _onToggleVolume() {
-    _isMute = !_isMute;
-    _videoPlayerController.setVolume(_isMute ? 0 : 1);
-    setState(() {});
+    final muted = ref.read(playbackConfigProvider).muted;
+    ref.read(playbackConfigProvider.notifier).setMuted(!muted);
+
+    // NOTE: 這邊切換有問題
+    final double volume = !muted ? 1 : 0;
+    _videoPlayerController.setVolume(volume);
   }
 
   @override
@@ -185,7 +185,7 @@ class _VideoPostState extends State<VideoPost>
             top: 40,
             child: IconButton(
               icon: FaIcon(
-                _isMute
+                ref.watch(playbackConfigProvider).muted
                     ? FontAwesomeIcons.volumeXmark
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
