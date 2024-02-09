@@ -132,8 +132,7 @@ class VideoPostState extends ConsumerState<VideoPost>
     final muted = ref.read(playbackConfigProvider).muted;
     ref.read(playbackConfigProvider.notifier).setMuted(!muted);
 
-    // NOTE: 這邊切換有問題
-    final double volume = !muted ? 1 : 0;
+    final double volume = muted ? 1 : 0;
     _videoPlayerController.setVolume(volume);
   }
 
