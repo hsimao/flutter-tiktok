@@ -22,10 +22,27 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app-1-324325701970-ios-6027b99e94e74569d7a28b</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires a camera to take pictures</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app requires a microphone to take pictures</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires album access required to save videos in your album</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -43,11 +60,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>NSCameraUsageDescription</key>
-  <string>This app requires a camera to take pictures</string>
-  <key>NSMicrophoneUsageDescription</key>
-  <string>This app requires a microphone to take pictures</string>
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>This app requires album access required to save videos in your album</string>
 </dict>
 </plist>
