@@ -20,6 +20,15 @@ class AuthenticationRepository {
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }
+
+  // 登入
+  Future<void> signIn(
+    String email,
+    String password,
+  ) async {
+    await _firebaseAuth.signInWithEmailAndPassword(
+        email: email, password: password);
+  }
 }
 
 final authRepo = Provider((ref) => AuthenticationRepository());
