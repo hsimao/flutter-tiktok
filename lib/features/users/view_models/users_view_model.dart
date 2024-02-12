@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tiktok_clone/features/authentication/view_models/signup_view_model.dart';
 import 'package:tiktok_clone/features/users/models/user_profile_model.dart';
 import 'package:tiktok_clone/features/users/repos/user_repo.dart';
 
@@ -18,14 +19,16 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     if (credential.user == null) throw Exception("Account not created");
 
     state = const AsyncValue.loading();
+    final form = ref.read(signUpForm);
 
     // 更新 user profile 到 model
     final profile = UserProfileModel(
       bio: "undefined",
       link: "undefined",
-      email: credential.user!.email ?? "anon@anon.com",
       uid: credential.user!.uid,
-      name: credential.user!.displayName ?? "Anon",
+      email: form["email"],
+      name: form["name"],
+      birthday: form["birthday"],
     );
 
     // 更新到 database

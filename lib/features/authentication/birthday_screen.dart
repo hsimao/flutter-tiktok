@@ -31,6 +31,14 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
   }
 
   void _onNextTap() {
+    // update signUpForm state
+    final state = ref.read(signUpForm.notifier).state;
+    ref.read(signUpForm.notifier).state = {
+      ...state,
+      "birthday": _birthdayController.value
+    };
+
+    // call signUp function
     ref.read(signUpProvider.notifier).signUp(context);
   }
 
