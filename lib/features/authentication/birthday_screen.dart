@@ -35,7 +35,7 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
     final state = ref.read(signUpForm.notifier).state;
     ref.read(signUpForm.notifier).state = {
       ...state,
-      "birthday": _birthdayController.value
+      "birthday": _birthdayController.text
     };
 
     // call signUp function
