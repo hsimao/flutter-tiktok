@@ -27,7 +27,7 @@ class Avatar extends ConsumerWidget {
 
     if (xfile != null) {
       final file = File(xfile.path);
-      ref.read(avatarProvider.notifier).uploadAvatar(file);
+      await ref.read(avatarProvider.notifier).uploadAvatar(file);
     }
   }
 
@@ -52,14 +52,10 @@ class Avatar extends ConsumerWidget {
               backgroundColor: Colors.white,
               foregroundImage: hasAvatar
                   ? NetworkImage(
-                      "https://firebasestorage.googleapis.com/v0/b/flutter-tiktok-3baab.appspot.com/o/avatars%$uid?alt=media")
+                      "https://firebasestorage.googleapis.com/v0/b/flutter-tiktok-3baab.appspot.com/o/avatars%2F$uid?alt=media&rand=${DateTime.now().millisecondsSinceEpoch}")
                   : const AssetImage('assets/images/avatar-default.png')
                       as ImageProvider<Object>?,
             ),
     );
   }
 }
-
-// assets/images/placeholder.jpg
-
-// https://firebasestorage.googleapis.com/v0/b/flutter-tiktok-3baab.appspot.com/o/avatars%2Fgq3J5HVl2fOYYMdLvx72E3TOVD92?alt=media&token=50e6d379-c1fb-44ef-bcab-9f6cc4401501

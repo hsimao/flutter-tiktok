@@ -54,10 +54,15 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     state = AsyncValue.data(profile);
   }
 
+  // 更新 avatar 狀態為 true
   Future<void> onAvatarUpload() async {
+    if (state.value == null) return;
+
     state = AsyncValue.data(
       state.value!.copyWith(hasAvatar: true),
     );
+
+    await _usersRepository.updateUser(state.value!.uid, {"hasAvatar": true});
   }
 }
 
