@@ -52,7 +52,7 @@ class Avatar extends ConsumerWidget {
               backgroundColor: Colors.white,
               foregroundImage: hasAvatar
                   ? NetworkImage(
-                      "https://firebasestorage.googleapis.com/v0/b/flutter-tiktok-3baab.appspot.com/o/avatars%2F$uid?alt=media&rand=${DateTime.now().toString()}")
+                      "https://firebasestorage.googleapis.com/v0/b/flutter-clone-54ea0.appspot.com/o/avatars%2F$uid?alt=media&rand=${DateTime.now().toString()}")
                   : const AssetImage('assets/images/avatar-default.png')
                       as ImageProvider<Object>?,
             ),

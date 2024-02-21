@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
+import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/view_models/timeline_view_model.dart';
+import 'package:tiktok_clone/features/videos/view_models/upload_video_view_model.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPreviewScreen extends ConsumerStatefulWidget {
@@ -27,6 +30,8 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   late final VideoPlayerController _videoPlayerController;
 
   bool _saveVideo = false;
+
+  Map<String, String> formData = {};
 
   Future<void> _initVideo() async {
     _videoPlayerController =
@@ -65,7 +70,11 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   }
 
   void _onUploadPressed() {
-    ref.read(timelineProvider.notifier).uploadVideo();
+    ref.read(uploadVideoProvider.notifier).uploadVideo(
+          File(widget.video.path),
+          context,
+          formData,
+        );
   }
 
   @override
@@ -90,9 +99,93 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
           ),
         ],
       ),
-      body: _videoPlayerController.value.isInitialized
-          ? VideoPlayer(_videoPlayerController)
-          : null,
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          Positioned.fill(
+            child: _videoPlayerController.value.isInitialized
+                ? VideoPlayer(_videoPlayerController)
+                : Container(
+                    color: Colors.black,
+                  ),
+          ),
+          Positioned(
+            bottom: 100,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.transparent.withOpacity(0.18),
+              ),
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: MediaQuery.of(context).size.height * 0.15,
+              child: Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Sizes.size4,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        minLines: 1,
+                        decoration: InputDecoration(
+                          hintText: "title",
+                          hintStyle: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade400,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade400,
+                            ),
+                          ),
+                        ),
+                        onChanged: (newValue) {
+                          formData["title"] = newValue;
+                        },
+                      ),
+                      Gaps.v4,
+                      TextFormField(
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        minLines: 1,
+                        decoration: InputDecoration(
+                          hintText: "description",
+                          hintStyle: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade400,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade400,
+                            ),
+                          ),
+                        ),
+                        onChanged: (newValue) {
+                          formData["description"] = newValue;
+                        },
+                      ),
+                      Gaps.v10,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
