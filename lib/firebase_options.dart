@@ -47,28 +47,28 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBM21iIfiIwEZmhgPdn3swStWQ8HDskq8s',
-    appId: '1:324325701970:web:acbd5b037d16cb27d7a28b',
-    messagingSenderId: '324325701970',
-    projectId: 'flutter-tiktok-3baab',
-    authDomain: 'flutter-tiktok-3baab.firebaseapp.com',
-    storageBucket: 'flutter-tiktok-3baab.appspot.com',
+    apiKey: 'AIzaSyB3WN520vlkL5GXnbhC9QjnYuO9yMcZLco',
+    appId: '1:878012081111:web:643fd719569de844ef6192',
+    messagingSenderId: '878012081111',
+    projectId: 'flutter-clone-54ea0',
+    authDomain: 'flutter-clone-54ea0.firebaseapp.com',
+    storageBucket: 'flutter-clone-54ea0.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAXnVRA-pNItFt9vgt5nsvjfv_rWiqKp4A',
-    appId: '1:324325701970:android:d21a6305c696c7c7d7a28b',
-    messagingSenderId: '324325701970',
-    projectId: 'flutter-tiktok-3baab',
-    storageBucket: 'flutter-tiktok-3baab.appspot.com',
+    apiKey: 'AIzaSyApLamApwuCup8vs1kpSlb74XaNrQjo7WM',
+    appId: '1:878012081111:android:44facd61eb313d9def6192',
+    messagingSenderId: '878012081111',
+    projectId: 'flutter-clone-54ea0',
+    storageBucket: 'flutter-clone-54ea0.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD8hC7M_aV5h8wJJTDosNOAVCM-0XQm6BM',
-    appId: '1:324325701970:ios:6027b99e94e74569d7a28b',
-    messagingSenderId: '324325701970',
-    projectId: 'flutter-tiktok-3baab',
-    storageBucket: 'flutter-tiktok-3baab.appspot.com',
+    apiKey: 'AIzaSyAjwbsDrTeyl1nsgJf44TqxwsZJ9BhwuwY',
+    appId: '1:878012081111:ios:3ffffeb1d5fbfcf6ef6192',
+    messagingSenderId: '878012081111',
+    projectId: 'flutter-clone-54ea0',
+    storageBucket: 'flutter-clone-54ea0.appspot.com',
     iosBundleId: 'com.frontchen.tiktokClone',
   );
 }
