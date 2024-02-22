@@ -93,7 +93,7 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
             ),
           IconButton(
             onPressed: _onUploadPressed,
-            icon: ref.watch(timelineProvider).isLoading
+            icon: ref.watch(uploadVideoProvider).isLoading
                 ? const CircularProgressIndicator()
                 : const FaIcon(FontAwesomeIcons.cloudArrowUp),
           ),
@@ -117,70 +117,74 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
               ),
               width: MediaQuery.of(context).size.width * 0.7,
               height: MediaQuery.of(context).size.height * 0.15,
-              child: Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Sizes.size4,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextFormField(
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        minLines: 1,
-                        decoration: InputDecoration(
-                          hintText: "title",
-                          hintStyle: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade400,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade400,
-                            ),
-                          ),
-                        ),
-                        onChanged: (newValue) {
-                          formData["title"] = newValue;
-                        },
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Sizes.size4,
                       ),
-                      Gaps.v4,
-                      TextFormField(
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        minLines: 1,
-                        decoration: InputDecoration(
-                          hintText: "description",
-                          hintStyle: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade400,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          TextFormField(
+                            style: const TextStyle(
+                              color: Colors.white,
                             ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade400,
+                            minLines: 1,
+                            decoration: InputDecoration(
+                              hintText: "title",
+                              hintStyle: const TextStyle(
+                                color: Colors.white,
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
                             ),
+                            onChanged: (newValue) {
+                              formData["title"] = newValue;
+                            },
                           ),
-                        ),
-                        onChanged: (newValue) {
-                          formData["description"] = newValue;
-                        },
+                          Gaps.v4,
+                          TextFormField(
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                            minLines: 1,
+                            decoration: InputDecoration(
+                              hintText: "description",
+                              hintStyle: const TextStyle(
+                                color: Colors.white,
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                            ),
+                            onChanged: (newValue) {
+                              formData["description"] = newValue;
+                            },
+                          ),
+                          Gaps.v10,
+                        ],
                       ),
-                      Gaps.v10,
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
