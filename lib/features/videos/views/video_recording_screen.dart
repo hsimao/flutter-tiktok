@@ -241,6 +241,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       backgroundColor: Colors.black,
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
         child: !_hasPermission
             ? const Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -281,7 +282,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                   ),
                   Positioned(
                     width: MediaQuery.of(context).size.width,
-                    bottom: Sizes.size40,
+                    bottom: Sizes.size80 + Sizes.size20,
                     child: Row(
                       children: [
                         const Spacer(),
